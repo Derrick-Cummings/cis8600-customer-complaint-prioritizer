@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# AWS credentials and project secrets
+.aws/
+aws-credentials.csv
+credentials.csv
+*.pem
