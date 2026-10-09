@@ -1,49 +1,68 @@
 # Evaluation Results
 
-## Test approach
+## Test Approach
 
-The NovaMart Customer Complaint Prioritizer was tested using fictional customer complaints representing different urgency levels and customer-service scenarios.
+The NovaMart Customer Complaint Prioritizer was evaluated using five fictional customer complaints submitted through the deployed web interface.
 
-Testing focused on whether the application could:
+The evaluation focused on whether the application could:
 
 - Classify complaints as High, Medium, or Low urgency.
-
-- Identify customer sentiment.
-
-- Generate professional draft responses for human review.
-
+- Generate customer sentiment assessments.
+- Produce draft responses for human review.
 - Return results successfully through the AWS-hosted web interface.
 
-The urgency classifications were reviewed against the definitions established in the system prompt. Testing was exploratory and did not constitute a formal quantitative model evaluation.
+Expected urgency classifications were determined using the definitions established in the system prompt and compared with the AI-generated classifications.
+
+This was a small exploratory evaluation, not a formal production-level model assessment.
 
 ## Results
 
-The completed prototype successfully processed fictional customer complaints and returned urgency classifications, sentiment assessments, and draft responses.
+The following table summarizes the urgency-classification results from five fictional customer complaints.
 
-Testing identified some inconsistencies in urgency classification, particularly when distinguishing between complaints involving genuine risk and complaints expressing strong dissatisfaction.
+| Test ID | Expected Urgency | Actual Urgency | Result |
+|---|---|---|---|
+| TC-01 | Low | Low | Pass |
+| TC-02 | Medium | Medium | Pass |
+| TC-03 | Medium | Medium | Pass |
+| TC-04 | High | High | Pass |
+| TC-05 | High | High | Pass |
 
-Prompt refinements improved the clarity of the classification instructions.
+A test was marked **Pass** when the actual urgency classification matched the expected classification.
 
-No formal accuracy, precision, recall, or other quantitative performance metrics were calculated.
+## Evaluation Summary
 
-## Changes made
+All five AI-generated urgency classifications matched their expected classifications, resulting in **100% agreement (5/5)** on the selected fictional test cases.
 
-The following refinements were made during development:
+The evaluation included:
 
-- Added clearer definitions for High, Medium, and Low urgency.
+- 1 Low-urgency complaint.
+- 2 Medium-urgency complaints.
+- 2 High-urgency complaints.
 
-- Included representative complaint examples for each urgency category.
+The application also successfully returned sentiment assessments and draft responses through the web interface.
 
-- Clarified that angry language alone does not justify a High urgency classification.
+These results demonstrate successful urgency classification for the five selected complaints but do not establish overall model accuracy or production reliability.
 
-- Instructed the model not to claim that refunds, replacements, or escalations had already occurred.
+## Changes Made
 
-- Retested the application using fictional complaints after prompt adjustments.
+During the initial development and testing process, the system prompt was refined to address inconsistencies in urgency classification.
 
-## Changes made
+The refinements included:
 
-Testing was conducted using fictional complaints rather than actual customer records.
+- Adding clearer definitions for High, Medium, and Low urgency.
+- Providing representative complaint examples for each urgency category.
+- Clarifying that angry language alone does not justify a High urgency classification.
+- Instructing the model not to claim that refunds, replacements, or escalations had already occurred.
+- Retesting the application with fictional complaints after prompt adjustments.
 
-The project did not include a labeled production evaluation dataset, a formal model benchmark, or measured improvements in customer-service response times.
+These changes were made during prototype development, before the five-test evaluation documented above.
 
-Further evaluation would be necessary before deploying the application in a real customer-service environment.
+## Evaluation Limitations
+
+The evaluation used only five fictional customer complaints. Although all five urgency classifications matched their expected labels, the small test set does not establish overall model accuracy or production reliability.
+
+The evaluation did not use real customer records or a comprehensive labeled dataset.
+
+Sentiment accuracy and draft-response quality were not formally evaluated. The project also did not measure improvements in actual customer-service response times, customer satisfaction, or other business outcomes.
+
+Further testing with a larger and more varied dataset would be necessary before considering production deployment.
