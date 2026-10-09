@@ -101,7 +101,9 @@ docs/
 ├── NovaMart_Customer_Complaint_Prioritizer.pdf
 └── evaluation_results.md
 
-tests/
+sample_data/
+├── README.md
+└── fictional_customer_complaints.xlsx
 
 README.md
 requirements.txt
