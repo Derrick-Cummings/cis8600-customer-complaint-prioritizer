@@ -222,3 +222,8 @@ __marimo__/
 aws-credentials.csv
 credentials.csv
 *.pem
+
+# Additional secrets and local configuration
+.env.*
+*.key
+.DS_Store
