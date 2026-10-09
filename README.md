@@ -1,9 +1,5 @@
 # NovaMart Customer Complaint Prioritizer
 ### A Generative AI Proof of Concept
-## Project Overview
-
-# NovaMart Customer Complaint Prioritizer
-### A Generative AI Proof of Concept
 
 ## Project Overview
 
