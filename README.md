@@ -1,6 +1,8 @@
 # NovaMart Customer Complaint Prioritizer
 ### A Generative AI Proof of Concept
 
+**[Try the Live Demo](http://novamart-complaint-prioritizer-ui-2026.s3-website-us-east-1.amazonaws.com/)**
+
 ## Project Overview
 
 The NovaMart Customer Complaint Prioritizer is a generative AI application developed to help customer-service agents identify urgent complaints, assess customer sentiment, and prepare response drafts for human review.
