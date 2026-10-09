@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NovaMart Customer Complaint Prioritizer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background: #f7f8fa;
+      color: #1f2937;
+    }
+    .container {
+      background: white;
+      border: 1px solid #d0d7de;
+      border-radius: 10px;
+      padding: 28px;
+    }
+    h1 {
+      color: #12355b;
+    }
+    textarea {
+      width: 100%;
+      min-height: 125px;
+      padding: 10px;
+      margin: 8px 0 16px;
+      box-sizing: border-box;
+      border: 1px solid #aeb8c2;
+      border-radius: 6px;
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+    }
+    button {
+      padding: 9px 14px;
+      margin: 4px 6px 10px 0;
+      border: none;
+      border-radius: 5px;
+      background: #1769aa;
+      color: white;
+      cursor: pointer;
+    }
+    .secondary-button {
+      background: #5f6b76;
+    }
+    .result-box {
+      background: #f4f6f8;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      padding: 18px;
+      margin-top: 22px;
+    }
+    .label {
+      font-weight: bold;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 12px;
+      color: black;
+      font-weight: bold;
+    }
+    .high {
+      background: #FB4545;
+    }
+    .medium {
+      background: #FF7E00;
+    }
+    .low {
+      background: #FED85D;
+    }
+    #reviewControls {
+      display: none;
+    }
+    #statusMessage {
+      color: #216e39;
+      font-weight: bold;
+    }
+    #errorMessage {
+      color: #b42318;
+      font-weight: bold;
+    }
+    .note {
+      color: #4b5563;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>NovaMart Customer Complaint Prioritizer</h1>
+    <p>Paste a fictional customer complaint below.</p>
+
+    <label for="complaint"><strong>Customer complaint</strong></label>
+    <textarea id="complaint" placeholder="Paste a fictional complaint here."></textarea>
+
+    <button onclick="analyzeComplaint()">Analyze</button>
+
+    <section id="resultSection" class="result-box" style="display: none;">
+      <h2>Result</h2>
+
+      <p>
+        <span class="label">Urgency:</span>
+        <span id="urgency" class="badge"></span>
+      </p>
+
+      <p>
+        <span class="label">Sentiment:</span>
+        <span id="sentiment"></span>
+      </p>
+
+      <label for="draftResponse">
+        <strong>Draft response for agent review</strong>
+      </label>
+
+      <textarea id="draftResponse" readonly></textarea>
+
+      <div id="reviewControls">
+        <button onclick="acceptDraft()">Accept Draft</button>
+        <button class="secondary-button" onclick="modifyDraft()">Modify Draft</button>
+        <button class="secondary-button" onclick="copyDraft()">Copy Final Response</button>
+      </div>
+
+      <p id="statusMessage"></p>
+      <p id="errorMessage"></p>
+
+      <p class="note">
+        The draft is for human review only. This prototype does not send messages to customers.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const API_URL =
+      "https://w6obs9nkf8.execute-api.us-east-1.amazonaws.com/prod/cis8600-complaint-prioritizer-analyze";
+
+    async function analyzeComplaint() {
+      const complaint = document.getElementById("complaint").value.trim();
+      const resultSection = document.getElementById("resultSection");
+      const errorMessage = document.getElementById("errorMessage");
+      const statusMessage = document.getElementById("statusMessage");
+      const reviewControls = document.getElementById("reviewControls");
+
+      errorMessage.textContent = "";
+      statusMessage.textContent = "";
+
+      if (!complaint) {
+        resultSection.style.display = "block";
+        reviewControls.style.display = "none";
+        errorMessage.textContent = "Please enter a fictional customer complaint.";
+        return;
+      }
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            complaint: complaint
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "The analysis request failed.");
+        }
+
+        const cleanAnalysis = String(data.analysis)
+          .replace(/```json/gi, "")
+          .replace(/```/g, "")
+          .trim();
+
+        const analysis = JSON.parse(cleanAnalysis);
+
+        const urgency = analysis.urgency || "Not returned";
+
+        const urgencyElement = document.getElementById("urgency");
+        urgencyElement.textContent = urgency;
+        urgencyElement.className = "badge " + urgency.toLowerCase();
+
+        document.getElementById("sentiment").textContent =
+          analysis.sentiment || "Not returned";
+
+        const draftBox = document.getElementById("draftResponse");
+        draftBox.value =
+          analysis.draft_response || "No draft response returned.";
+        draftBox.readOnly = true;
+
+        resultSection.style.display = "block";
+        reviewControls.style.display = "block";
+
+        statusMessage.textContent =
+          "Review the AI-generated draft before using it. It has not been sent to any customer.";
+      } catch (error) {
+        resultSection.style.display = "block";
+        reviewControls.style.display = "none";
+        errorMessage.textContent = "Error: " + error.message;
+      }
+    }
+
+    function acceptDraft() {
+      document.getElementById("draftResponse").readOnly = true;
+
+      document.getElementById("statusMessage").textContent =
+        "Draft accepted. It has not been sent; use Copy Final Response if needed.";
+    }
+
+    function modifyDraft() {
+      const draftBox = document.getElementById("draftResponse");
+      draftBox.readOnly = false;
+      draftBox.focus();
+
+      document.getElementById("statusMessage").textContent =
+        "You can now edit the draft. It will not be sent automatically.";
+    }
+
+    function copyDraft() {
+      const draftBox = document.getElementById("draftResponse");
+      draftBox.select();
+      document.execCommand("copy");
+
+      document.getElementById("statusMessage").textContent =
+        "Final response copied. It has not been sent to a customer.";
+    }
+  </script>
+</body>
+</html>
