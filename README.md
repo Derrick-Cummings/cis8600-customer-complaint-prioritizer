@@ -1,7 +1,19 @@
 # NovaMart Customer Complaint Prioritizer
+
 ### A Generative AI Proof of Concept
 
 **[Try the Live Demo](http://novamart-complaint-prioritizer-ui-2026.s3-website-us-east-1.amazonaws.com/)**
+
+### How to Test the Demo
+
+1. [Download the Fictional Customer Complaints](sample_data/fictional_customer_complaints.xlsx).
+2. Open the Excel file and copy a complaint from the **Fake Customer Complaint** column.
+3. Open the live demo and paste the complaint into the text box.
+4. Click **Analyze**.
+5. Review the AI-generated urgency, sentiment, and draft response.
+6. Compare the results with the expected urgency, sentiment, and response checks in the spreadsheet.
+
+**Note:** The application accepts pasted complaint text, not Excel file uploads. All complaints are fictional.
 
 ## Project Overview
 
