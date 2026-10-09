@@ -1,5 +1,6 @@
-# This file will contain the AWS Lambda function for the Customer Complaint Prioritizer.
-# It will receive a fictional complaint, call Amazon Bedrock, and return the analysis.
+# AWS Lambda function for the NovaMart Customer Complaint Prioritizer.
+# Receives fictional customer complaints, invokes Amazon Bedrock,
+# and returns urgency, sentiment, and a draft response for human review.
 
 import json 
 
