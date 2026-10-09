@@ -95,7 +95,6 @@ app/
 ├── frontend/
 │   └── index.html
 ├── lambda_function.py
-└── prompt.py
 
 docs/
 ├── NovaMart_Customer_Complaint_Prioritizer.pdf
